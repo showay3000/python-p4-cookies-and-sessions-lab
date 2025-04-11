@@ -32,14 +32,13 @@ class TestApp:
             client.get('/articles/3')
             assert(flask.session.get('page_views') == 3)
 
-            client.get('/articles/3')
+            client.get('/articles/4')
             assert(flask.session.get('page_views') == 4)
 
     def test_limits_three_articles(self):
         '''returns a 401 with an error message after 3 viewed articles.'''
-        with app.app_context():
 
-            client = app.test_client()
+        with app.test_client() as client:
 
             response = client.get('/articles/1')
             assert(response.status_code == 200)
@@ -54,4 +53,3 @@ class TestApp:
             assert(response.status_code == 401)
             assert(response.get_json().get('message') == 
                 'Maximum pageview limit reached')
-
